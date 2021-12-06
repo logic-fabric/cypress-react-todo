@@ -1,6 +1,6 @@
 describe("GIVEN a TodoForm component", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.initAndVisit([]);
   });
 
   it("THEN it should focus input on load", () => {
