@@ -1,7 +1,7 @@
 import React from "react";
 
 export default (props) => (
-  <form>
+  <form onSubmit={props.handleTodoSubmit}>
     <input
       className="new-todo"
       type="text"
