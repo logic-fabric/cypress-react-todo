@@ -7,3 +7,7 @@ export function loadTodos() {
 export function saveTodo(todo) {
   return axios.post("http://localhost:3030/api/todos", todo);
 }
+
+export function deleteTodo(todoId) {
+  return axios.delete(`http://localhost:3030/api/todos/${todoId}`);
+}
