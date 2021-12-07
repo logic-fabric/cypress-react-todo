@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
 import Footer from "./Footer";
-import { deleteTodo, loadTodos, saveTodo } from "../lib/service";
+import { deleteTodo, loadTodos, saveTodo, updateTodo } from "../lib/service";
 
 export default class TodoApp extends Component {
   constructor(props) {
@@ -18,6 +18,7 @@ export default class TodoApp extends Component {
     this.handleNewTodoChange = this.handleNewTodoChange.bind(this);
     this.handleTodoSubmit = this.handleTodoSubmit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
   }
 
   componentDidMount() {
@@ -28,6 +29,21 @@ export default class TodoApp extends Component {
 
   handleNewTodoChange(event) {
     this.setState({ currentTodo: event.target.value });
+  }
+
+  handleToggle(todoId) {
+    const targetTodo = this.state.todos.find((todo) => todo.id === todoId);
+    const updatedTodo = {
+      ...targetTodo,
+      isComplete: !targetTodo.isComplete,
+    };
+
+    updateTodo(updatedTodo).then(({ data }) => {
+      const todos = this.state.todos.map((todo) =>
+        todo.id === data.id ? data : todo
+      );
+      this.setState({ todos: todos });
+    });
   }
 
   handleDelete(todoId) {
@@ -76,6 +92,7 @@ export default class TodoApp extends Component {
           <section className="main">
             <TodoList
               todos={this.state.todos}
+              handleToggle={this.handleToggle}
               handleDelete={this.handleDelete}
             />
           </section>

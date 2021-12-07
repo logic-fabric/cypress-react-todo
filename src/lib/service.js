@@ -11,3 +11,7 @@ export function saveTodo(todo) {
 export function deleteTodo(todoId) {
   return axios.delete(`http://localhost:3030/api/todos/${todoId}`);
 }
+
+export function updateTodo(todo) {
+  return axios.put(`http://localhost:3030/api/todos/${todo.id}`, todo);
+}
