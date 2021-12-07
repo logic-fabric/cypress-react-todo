@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 export default (props) => (
   <footer className="footer">
     <span className="todo-count">
-      <strong>{props.remainingTodosQuantity}</strong> todos left
+      <strong>{props.remainingTodosQuantity}</strong>
+      {props.remainingTodosQuantity > 1 ? " todos" : " todo"} left
     </span>
     <ul className="filters">
       <li>
