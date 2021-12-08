@@ -24,4 +24,53 @@ describe("GIVEN a user", () => {
       });
     });
   });
+
+  context("WHEN there are active todos", () => {
+    beforeEach(() => {
+      cy.fixture("todos").each((todo) => {
+        const newTodo = Cypress._.merge(todo, { isComplete: false });
+        cy.request("POST", "/api/todos", newTodo);
+      });
+
+      cy.visit("/");
+    });
+
+    it("THEN the existing data are loaded from the DB", () => {
+      cy.get(".todo-list li").should("have.length", 4);
+    });
+
+    it("THEN the user can delete all todos", () => {
+      cy.server();
+      cy.route("DELETE", "/api/todos/*").as("delete");
+
+      cy.get(".todo-list li")
+        .each(($elt) => {
+          cy.wrap($elt).find(".destroy").invoke("show").click();
+          cy.wait("@delete");
+        })
+        .should("not.exist");
+    });
+
+    it("THEN the user can toggle todos", () => {
+      const clickAndWait = ($elt) => {
+        cy.wrap($elt).as("item").find(".toggle").click();
+        cy.wait("@update");
+      };
+
+      cy.server();
+      cy.route("PUT", "/api/todos/*").as("update");
+
+      cy.get(".todo-list li")
+        .each(($elt) => {
+          clickAndWait($elt);
+
+          cy.get("@item").should("have.class", "completed");
+        })
+        .each(($elt) => {
+          clickAndWait($elt);
+
+          cy.get("@item").should("not.have.class", "completed");
+        });
+    });
+  });
 });
