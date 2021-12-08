@@ -1,3 +1,3 @@
-# Build and test an application using Cypress
+# cypress-react-todo
 
-This repository is the starting point for an official Cypress tutorial. We encourage you to clone this repo and follow along.
+Completion of the tutorial Test a React Todo App of Cypress doc - Dec 2021
